@@ -5,9 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"io/ioutil"
 )
 type Product struct {
-	Name     string
+	ProductName    string
 	Quantity int
 	Price    float64
 }
@@ -20,7 +21,7 @@ type Customer struct {
 }
 type Invoice struct {
 	Key string // your api key
-	Products []Products
+	Products []Product
 	Customer Customer
 	TestMode int // 1 is test, 0 is live
 }
@@ -42,7 +43,7 @@ func NewInvoice(inv Invoice) (bool,string,string,string){
 		return true,"Error in marshaling json request","",""
 	}
 	// creating client request
-	req, err := http.NewRequest("POST", bytes.NewBuffer(jsonRequest))
+	req, err := http.NewRequest("POST", farasURL, bytes.NewBuffer(jsonRequest))
 	req.Header.Set("Content-Type", "application/json")
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -55,7 +56,7 @@ func NewInvoice(inv Invoice) (bool,string,string,string){
 	
 	var fdata FarasResponse
 	// unmarshal json response 
-	if reserr := json.Unmarshal(bd, &fdata); res != nil {
+	if reserr := json.Unmarshal(bd, &fdata); reserr != nil {
 		fmt.Println(reserr)
 		return true,"Error in unmarshal json response","",""
 	}
