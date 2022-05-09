@@ -42,7 +42,7 @@ func NewInvoice(inv Invoice) (bool,string,string,string){
 		return true,"Error in marshaling json request","",""
 	}
 	// creating client request
-	req, err := http.NewRequest("POST", , bytes.NewBuffer(jsonRequest))
+	req, err := http.NewRequest("POST", bytes.NewBuffer(jsonRequest))
 	req.Header.Set("Content-Type", "application/json")
 	client := &http.Client{}
 	resp, err := client.Do(req)
