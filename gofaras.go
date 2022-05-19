@@ -33,7 +33,7 @@ type FarasResponse struct {
 	InvoicePDFURL string
 }
 
-const farasURL = "https://faras.io/api_newinvoice/"
+var FarasURL = "https://faras.io/api_newinvoice/"
 
 func NewInvoice(inv Invoice) (bool,string,string,string){
 	//marshal json request ...
@@ -43,7 +43,7 @@ func NewInvoice(inv Invoice) (bool,string,string,string){
 		return true,"Error in marshaling json request","",""
 	}
 	// creating client request
-	req, err := http.NewRequest("POST", farasURL, bytes.NewBuffer(jsonRequest))
+	req, err := http.NewRequest("POST", FarasURL, bytes.NewBuffer(jsonRequest))
 	req.Header.Set("Content-Type", "application/json")
 	client := &http.Client{}
 	resp, err := client.Do(req)
